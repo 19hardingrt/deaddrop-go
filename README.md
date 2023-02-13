@@ -20,3 +20,8 @@ Then run `go run main.go -new -user <username here>` and you will be prompted to
 ## Database
 
 Data gets stored into the local database file dd.db. This file will not by synched to git repos. Delete this file if you don't set up a user properly on the first go
+
+## Logging Strategy
+
+The idea behind my logging code was to keep track new users that are created, who messages are sent to, and when someone reads the messages they were sent
+(not referring to a specific timestamp). I chose to omit any information regarding who sent the message to the following user in order to ensure privacy of the sender as well as the specific contents of the message.
