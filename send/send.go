@@ -17,18 +17,26 @@ func SendMessage(to string) {
 	}
 
 	message := getUserMessage()
-
+	f, e := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if e != nil {
+		log.Fatalf("Error opening file: %v", e)
+	}
+	if _, err := f.WriteString("Message sent to " + to + "\n"); err != nil {
+		log.Println(err)
+	}
 	db.SaveMessage(message, to)
 }
 
 // getUserMessage prompts the user for the message to send
 // and returns it
 func getUserMessage() string {
+
 	fmt.Println("Enter your message: ")
 	reader := bufio.NewReader(os.Stdin)
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatalf("Error reading input: %v", err)
 	}
+
 	return text
 }
