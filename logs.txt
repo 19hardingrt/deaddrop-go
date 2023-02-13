@@ -1,6 +1,7 @@
 New user created: Ryan1
 New user created: Ryan2
 Message sent to Ryan2
+Ryan2 failed to read messages
 Ryan2 read their messages
 Message sent to Ryan1
 Ryan1 read their messages
