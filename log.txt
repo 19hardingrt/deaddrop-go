@@ -1,0 +1,12 @@
+2023/03/26 15:17:22 void created a new user
+
+2023/03/26 15:17:40 void created a new user: 19hardingrt
+
+2023/03/26 15:18:16 19hardingrt created a new user
+
+2023/03/26 15:18:39 19hardingrt created a new user: CadetChromie
+
+2023/03/26 15:20:16 User: CadettChromie attempted to send a message with an incorrect password
+2023/03/26 15:20:16 Destination user does not exist
+2023/03/26 15:21:58 CadetChromie received a message from 19hardingrt
+2023/03/26 15:28:32 MAC failure: 'This is a test' from 19hardingrt cannot be verified!

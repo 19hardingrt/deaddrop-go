@@ -25,3 +25,10 @@ Data gets stored into the local database file dd.db. This file will not by synch
 
 The idea behind my logging code was to keep track new users that are created, who messages are sent to, and when someone reads the messages they were sent
 (not referring to a specific timestamp). I chose to omit any information regarding who sent the message to the following user in order to ensure privacy of the sender as well as the specific contents of the message.
+
+## MAC Strategy
+
+The idea behind my MAC strategy was to ensure that the sender authenticates that they are logged in to their proper user account before sending a message.
+A MAC is then added to the database with the message and is checked when a user reads their messages. If the MAC does not match, it will alert the user. I have also added an additional flag for the -send flag where you need to specify both the sender and the recipient. The new sending usage is: 
+
+go run main.go -send -to <recipient> -from <sender>

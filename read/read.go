@@ -1,6 +1,9 @@
 package read
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"os"
@@ -10,27 +13,36 @@ import (
 )
 
 func ReadMessages(user string) {
-	f, e := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if e != nil {
-		log.Fatalf("Error opening file: %v", e)
-	}
 	if !db.UserExists(user) {
+		log.Println("Cannot read messages from non-existent user: " + user + "\n")
 		log.Fatalf("User not recognized")
 	}
 
 	err := session.Authenticate(user)
 	if err != nil {
-		if _, err := f.WriteString(user + " failed to read messages\n"); err != nil {
-			log.Println(err)
-		}
+		log.Println("Cannot read messages with the wrong password for: " + user + "\n")
 		log.Fatalf("Unable to authenticate user")
 	}
 
-	messages := db.GetMessagesForUser(user)
+	messages := db.GetMessagesForUser2(user)
 	for _, message := range messages {
-		fmt.Println(message)
+		if verify([]byte(message.Message), []byte(os.Getenv("KEY")), message.Hash) {
+			fmt.Println(message.Sender + " sent: " + message.Message)
+		} else {
+			log.Println("MAC failure: '" + message.Message + "' from " + message.Sender + " cannot be verified!")
+			fmt.Println("WARNING! Message cannot be authenticated!! " + message.Sender + " sent: " + message.Message)
+		}
 	}
-	if _, err := f.WriteString(user + " read their messages\n"); err != nil {
-		log.Println(err)
+}
+
+func verify(msg, key []byte, hash string) bool {
+	sig, err := hex.DecodeString(hash)
+	if err != nil {
+		return false
 	}
+
+	mac := hmac.New(sha256.New, key)
+	mac.Write(msg)
+
+	return hmac.Equal(sig, mac.Sum(nil))
 }
